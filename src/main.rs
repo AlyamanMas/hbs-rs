@@ -8,6 +8,9 @@ fn main() -> Result<(), Box<dyn Error>> {
   let args: Config = Config::parse();
 
   let mut handlebars = Handlebars::new();
+  if args.strict {
+    handlebars.set_strict_mode(true);
+  }
 
   handlebars.register_template_file("template", &args.template)?;
 

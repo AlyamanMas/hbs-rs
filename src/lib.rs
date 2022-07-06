@@ -8,16 +8,20 @@ use std::{error::Error, fs::read_to_string, path::PathBuf};
 #[clap(author, version, about, long_about = None)]
 pub struct Config {
   /// Template file to use.
-  #[clap(value_parser)]
   pub template: PathBuf,
 
   /// File to grab data from. If not supplied, will use environment variables.
-  #[clap(short, long, value_parser)]
+  #[clap(short, long)]
   pub data: Option<PathBuf>,
 
   /// Output path. If empty, will output to stdout.
-  #[clap(short, long, value_parser)]
+  #[clap(short, long)]
   pub output: Option<PathBuf>,
+
+  /// Strict mode; errors when a value is in the template and can't be
+  /// found in the data
+  #[clap(short, long)]
+  pub strict: bool,
 }
 
 impl Config {
