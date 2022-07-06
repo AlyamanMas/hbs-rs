@@ -4,8 +4,19 @@ authors = [ "Alyaman Maasarani <alyaman.maasarani@gmail.com>" ]
 license = "GPL3"
 version = "0.1.0"
 edition = "2021"
+rust-version = "1.64"
+repository = "https://github.com/AlyamanMas/hbs-rs/"
+homepage = "https://github.com/AlyamanMas/hbs-rs/"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
 clap = { version = "3.2.8", features = ["derive"] }
+handlebars = "4.3.1"
+
+[profile.release]
+strip = true
+opt-level = "z"
+lto = true
+code-gen-units = 1
+panic = "abort"
