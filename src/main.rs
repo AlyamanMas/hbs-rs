@@ -1,8 +1,7 @@
 use clap::Parser;
 use handlebars::Handlebars;
-use hbs::Config;
-use std::env::vars;
-use std::{collections::BTreeMap, error::Error};
+use hbs::{Config, Data};
+use std::error::Error;
 
 fn main() -> Result<(), Box<dyn Error>> {
   let args: Config = Config::parse();
@@ -12,13 +11,18 @@ fn main() -> Result<(), Box<dyn Error>> {
     handlebars.set_strict_mode(true);
   }
 
-  let data = BTreeMap::from_iter(vars());
+  let data: Data = args.get_data();
 
   args.register_template(&mut handlebars)?;
 
-  println!(
-    "Rendering template:\n{}",
-    handlebars.render("template", &data)?
+  print!(
+    "{}",
+     match &data {
+      Data::Json(x) => handlebars.render("template", x)?,
+      Data::Yaml(x) => handlebars.render("template", x)?,
+      Data::Toml(x) => handlebars.render("template", x)?,
+      Data::Env(x) => handlebars.render("template", x)?,
+    }
   );
 
   Ok(())
