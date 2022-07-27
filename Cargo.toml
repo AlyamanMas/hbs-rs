@@ -2,7 +2,7 @@
 name = "hbs"
 authors = [ "Alyaman Maasarani <alyaman.maasarani@gmail.com>" ]
 license = "GPL3"
-version = "0.2.0"
+version = "0.2.1"
 edition = "2021"
 rust-version = "1.64"
 repository = "https://github.com/AlyamanMas/hbs-rs/"

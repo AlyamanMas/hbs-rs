@@ -95,7 +95,7 @@ impl Config {
         }
       }
       match file_extension {
-        "yaml" => match serde_yaml::from_str(string) {
+        "yaml" | "yml" => match serde_yaml::from_str(string) {
           Ok(x) => Data::Yaml(x),
           Err(x) => {
             eprintln!("Error, couldn't deserialize file as yaml, trying json\nError: {x}");
