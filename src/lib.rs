@@ -8,7 +8,6 @@ use std::{
   path::PathBuf,
 };
 
-// TODO: add support for taking input from stdin
 /// Simple templating program based on Handlebars and written in Rust
 #[derive(Parser, Debug)]
 #[clap(author, version, about, long_about = None)]
