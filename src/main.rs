@@ -12,9 +12,9 @@ fn main() -> Result<(), Box<dyn Error>> {
     handlebars.set_strict_mode(true);
   }
 
-  handlebars.register_template_file("template", &args.template)?;
-
   let data = BTreeMap::from_iter(vars());
+
+  args.register_template(&mut handlebars)?;
 
   println!(
     "Rendering template:\n{}",
