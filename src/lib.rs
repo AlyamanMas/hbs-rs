@@ -190,6 +190,7 @@ impl Config {
           .append(false)
           .write(true)
           .create(true)
+          .truncate(true)
           .open(x)?;
         file.write_all(self.render(data, handlebars)?.as_bytes())?;
       }
