@@ -15,15 +15,7 @@ fn main() -> Result<(), Box<dyn Error>> {
 
   args.register_template(&mut handlebars)?;
 
-  print!(
-    "{}",
-     match &data {
-      Data::Json(x) => handlebars.render("template", x)?,
-      Data::Yaml(x) => handlebars.render("template", x)?,
-      Data::Toml(x) => handlebars.render("template", x)?,
-      Data::Env(x) => handlebars.render("template", x)?,
-    }
-  );
+  print!("{}", args.render(&data, &mut handlebars)?);
 
   Ok(())
 }

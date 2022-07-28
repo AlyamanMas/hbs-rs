@@ -1,5 +1,5 @@
 use clap::Parser;
-use handlebars::Handlebars;
+use handlebars::{Handlebars, RenderError};
 use std::{
   collections::BTreeMap,
   env::vars,
@@ -53,7 +53,10 @@ impl Config {
     self.template.as_os_str() == OsStr::new("-")
   }
 
-  pub fn register_template(&self, handlebars: &mut Handlebars) -> Result<(), Box<dyn Error>> {
+  pub fn register_template(
+    &self,
+    handlebars: &mut Handlebars,
+  ) -> Result<(), Box<dyn Error>> {
     // if template file specified register it
     if !self.get_template_path_is_stdin() {
       handlebars.register_template_file("template", &self.template)?;
@@ -68,7 +71,9 @@ impl Config {
         }
       }
       // println!("stdin:\n{}", &mah_string);
-      if let Err(x) = handlebars.register_template_string("template", mah_string) {
+      if let Err(x) =
+        handlebars.register_template_string("template", mah_string)
+      {
         return Err(format!(
           "Error parsing template from stdin. Make sure there are no syntax errors.\nError: {}",
           x.to_string()
@@ -159,8 +164,21 @@ impl Config {
     } else {
       Data::Env(BTreeMap::from_iter(vars()))
     }
-  }
-}
+  } // end fn get_data
+
+  pub fn render(
+    &self,
+    data: &Data,
+    handlebars: &mut Handlebars,
+  ) -> Result<String, RenderError> {
+    match &data {
+      Data::Json(x) => handlebars.render("template", x),
+      Data::Yaml(x) => handlebars.render("template", x),
+      Data::Toml(x) => handlebars.render("template", x),
+      Data::Env(x) => handlebars.render("template", x),
+    }
+  } // end fn render
+} // end impl Config
 
 pub enum Data {
   Json(serde_json::Value),
