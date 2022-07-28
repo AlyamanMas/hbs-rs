@@ -194,7 +194,7 @@ impl Config {
         file.write_all(self.render(data, handlebars)?.as_bytes())?;
       }
       None => {
-        println!("{}", self.render(data, handlebars)?);
+        print!("{}", self.render(data, handlebars)?);
       }
     }
     Ok(())
