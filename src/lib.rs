@@ -5,8 +5,8 @@ use std::{
   env::vars,
   error::Error,
   ffi::{OsStr, OsString},
-  fs::{self, read_to_string},
-  io::{stdin, BufRead},
+  fs::{self, read_to_string, File},
+  io::{stdin, BufRead, Write},
   path::PathBuf,
 };
 
@@ -178,6 +178,27 @@ impl Config {
       Data::Env(x) => handlebars.render("template", x),
     }
   } // end fn render
+
+  pub fn write_to_output(
+    &self,
+    data: &Data,
+    handlebars: &mut Handlebars,
+  ) -> Result<(), Box<dyn Error>> {
+    match &self.output {
+      Some(x) => {
+        let mut file = File::options()
+          .append(false)
+          .write(true)
+          .create(true)
+          .open(x)?;
+        file.write_all(self.render(data, handlebars)?.as_bytes())?;
+      }
+      None => {
+        println!("{}", self.render(data, handlebars)?);
+      }
+    }
+    Ok(())
+  }
 } // end impl Config
 
 pub enum Data {

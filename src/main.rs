@@ -15,7 +15,7 @@ fn main() -> Result<(), Box<dyn Error>> {
 
   args.register_template(&mut handlebars)?;
 
-  print!("{}", args.render(&data, &mut handlebars)?);
+  args.write_to_output(&data, &mut handlebars)?;
 
   Ok(())
 }
